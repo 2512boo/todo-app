@@ -1,33 +1,45 @@
 <div class="container">
   <h1>{{ title }}</h1>
 
-  <!-- Nút + mở popup -->
-  <button class="add-btn" (click)="openModal()">＋</button>
+  <!-- Nút + mở popup thêm todo -->
+  <button class="add-btn" (click)="openAddModal()">＋</button>
 
-  <!-- Popup nhập todo -->
-  <div class="modal" *ngIf="showModal()">
+  <!-- Popup thêm todo -->
+  <div class="modal" *ngIf="showAddModal()">
     <div class="modal-content">
       <h2>Thêm việc mới</h2>
-      <input
-        type="text"
-        placeholder="Nhập việc cần làm..."
-        [(ngModel)]="newText"
-      />
+      <input type="text" [(ngModel)]="newText" placeholder="Nhập việc cần làm..." />
       <div class="modal-actions">
         <button (click)="addTodo()">Thêm</button>
-        <button (click)="closeModal()">Hủy</button>
+        <button (click)="closeAddModal()">Hủy</button>
       </div>
     </div>
   </div>
 
+  <!-- Popup chỉnh sửa todo -->
+  <div class="modal" *ngIf="showEditModal()">
+    <div class="modal-content">
+      <h2>Chỉnh sửa việc</h2>
+      <input type="text" [(ngModel)]="editText" />
+      <div class="modal-actions">
+        <button (click)="saveEdit()">Lưu</button>
+        <button (click)="closeEditModal()">Hủy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div class="filters">
+    <button [class.active]="filter() === 'all'" (click)="setFilter('all')">Tất cả</button>
+    <button [class.active]="filter() === 'active'" (click)="setFilter('active')">Chưa xong</button>
+    <button [class.active]="filter() === 'done'" (click)="setFilter('done')">Đã xong</button>
+  </div>
+
   <ul class="list">
-    <li *ngFor="let t of todos()">
-      <label>
-        <input type="checkbox" [checked]="t.done" (change)="toggle(t)" />
-        <span [class.done]="t.done">{{ t.text }}</span>
-      </label>
+    <li *ngFor="let t of filteredTodos">
+      <input type="checkbox" [checked]="t.done" (change)="toggle(t)" />
+      <span [class.done]="t.done" (dblclick)="openEditModal(t)">{{ t.text }}</span>
       <button class="delete" (click)="remove(t.id)">Xóa</button>
     </li>
   </ul>
 </div>
-
