@@ -17,36 +17,41 @@ interface Todo {
 })
 export class AppComponent {
   title = 'Todo List';
+  todos = signal<Todo[]>(JSON.parse(localStorage.getItem('todos') || '[]'));
+  showModal = signal(false); // ✅ popup hiển thị hay không
   newText = '';
-  private nextId = 1;
 
-  todos = signal<Todo[]>([
-    { id: this.nextId++, text: 'Học Angular', done: false },
-    { id: this.nextId++, text: 'Viết Todo App', done: true },
-  ]);
+  private persist() {
+    localStorage.setItem('todos', JSON.stringify(this.todos()));
+  }
 
-  add() {
+  openModal() {
+    this.newText = '';
+    this.showModal.set(true);
+  }
+
+  closeModal() {
+    this.showModal.set(false);
+  }
+
+  addTodo() {
     const text = this.newText.trim();
     if (!text) return;
-    this.todos.update(list => [...list, { id: this.nextId++, text, done: false }]);
-    this.newText = '';
+    const todo: Todo = { id: Date.now(), text, done: false };
+    this.todos.update(list => [...list, todo]);
+    this.persist();
+    this.closeModal();
   }
 
   toggle(todo: Todo) {
     this.todos.update(list =>
       list.map(t => (t.id === todo.id ? { ...t, done: !t.done } : t))
     );
+    this.persist();
   }
 
   remove(id: number) {
     this.todos.update(list => list.filter(t => t.id !== id));
-  }
-
-  clearCompleted() {
-    this.todos.update(list => list.filter(t => !t.done));
-  }
-
-  get remainingCount() {
-    return this.todos().filter(t => !t.done).length;
+    this.persist();
   }
 }

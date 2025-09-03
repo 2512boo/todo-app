@@ -1,19 +1,26 @@
 <div class="container">
   <h1>{{ title }}</h1>
 
-  <form (ngSubmit)="add()" class="add-row">
-    <input
-      type="text"
-      placeholder="Nhập việc cần làm..."
-      [(ngModel)]="newText"
-      name="todoInput"
-    />
-    <button type="submit">Thêm</button>
-  </form>
+  <!-- Nút + mở popup -->
+  <button class="add-btn" (click)="openModal()">＋</button>
 
-  <p *ngIf="todos().length === 0" class="empty">Chưa có việc nào.</p>
+  <!-- Popup nhập todo -->
+  <div class="modal" *ngIf="showModal()">
+    <div class="modal-content">
+      <h2>Thêm việc mới</h2>
+      <input
+        type="text"
+        placeholder="Nhập việc cần làm..."
+        [(ngModel)]="newText"
+      />
+      <div class="modal-actions">
+        <button (click)="addTodo()">Thêm</button>
+        <button (click)="closeModal()">Hủy</button>
+      </div>
+    </div>
+  </div>
 
-  <ul class="list" *ngIf="todos().length > 0">
+  <ul class="list">
     <li *ngFor="let t of todos()">
       <label>
         <input type="checkbox" [checked]="t.done" (change)="toggle(t)" />
@@ -22,9 +29,5 @@
       <button class="delete" (click)="remove(t.id)">Xóa</button>
     </li>
   </ul>
-
-  <div class="footer" *ngIf="todos().length > 0">
-    <span>{{ remainingCount }} việc chưa xong</span>
-    <button class="clear" (click)="clearCompleted()">Xóa việc đã xong</button>
-  </div>
 </div>
+
