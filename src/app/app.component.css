@@ -1,67 +1,23 @@
-.container { max-width: 600px; margin: 40px auto; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-h1 { margin-bottom: 16px; }
-
-.add-btn {
-  font-size: 24px;
-  padding: 6px 12px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  background: #2196f3;
-  color: white;
-  margin-bottom: 16px;
-}
-
-.list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
-.list li { display: flex; align-items: center; justify-content: space-between; padding: 8px; border: 1px solid #eee; border-radius: 8px; background: #fafafa; }
-.list span.done { text-decoration: line-through; color: #888; }
-
-.delete { background: #ffe5e5; color: #c62828; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; }
-
-.modal {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-content {
-  background: white;
-  padding: 24px;
-  border-radius: 12px;
-  width: 90%;
+.todo-app {
   max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  margin: 50px auto;
+  font-family: Arial, sans-serif;
 }
 
-.modal-content input { padding: 8px; border: 1px solid #ddd; border-radius: 6px; width: 100%; }
-.modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
-.modal-actions button { padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; }
-.modal-actions button:first-child { background: #2196f3; color: white; }
-.modal-actions button:last-child { background: #eee; }
-.container { max-width: 600px; margin: 40px auto; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-h1 { margin-bottom: 16px; }
+h1 {
+  text-align: center;
+}
 
-.add-btn { font-size: 24px; padding: 6px 12px; border-radius: 50%; border: none; cursor: pointer; background: #2196f3; color: white; margin-bottom: 16px; }
+input[type='text'] {
+  width: 70%;
+  padding: 5px;
+}
 
-.list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
-.list li { display: flex; align-items: center; justify-content: space-between; padding: 8px; border: 1px solid #eee; border-radius: 8px; background: #fafafa; }
-.list span.done { text-decoration: line-through; color: #888; }
-.list span { flex: 1; cursor: pointer; }
-.delete { background: #ffe5e5; color: #c62828; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; }
+button {
+  margin-left: 5px;
+}
 
-.filters { display: flex; gap: 8px; margin-bottom: 16px; }
-.filters button { border: none; background: #f5f5f5; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
-.filters button.active { background: #2196f3; color: white; }
-
-.modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; }
-.modal-content { background: white; padding: 24px; border-radius: 12px; width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 12px; }
-.modal-content input { padding: 8px; border: 1px solid #ddd; border-radius: 6px; width: 100%; }
-.modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
-.modal-actions button:first-child { background: #2196f3; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; }
-.modal-actions button:last-child { background: #eee; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; }
-
+.done {
+  text-decoration: line-through;
+  color: gray;
+}
