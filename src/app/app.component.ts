@@ -1,102 +1,47 @@
-import { Component, signal, computed } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-
-interface Todo {
-  id: number;
-  text: string;
-  done: boolean;
-}
+import { Component, OnInit } from '@angular/core';
+import { TodoService, Todo } from './todo.service';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [FormsModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  standalone :false
 })
-export class AppComponent {
-  title = 'Todo List';
-  todos = signal<Todo[]>(JSON.parse(localStorage.getItem('todos') || '[]'));
+export class AppComponent implements OnInit {
+  todos: Todo[] = [];
+  newTodo: string = '';
 
-  showAddModal = signal(false);
-  showEditModal = signal(false);
-  newText = '';
-  editText = '';
-  editId: number | null = null;
+  constructor(private todoService: TodoService) {}
 
-  filter = signal<'all' | 'active' | 'done'>('all');
-
-  private persist() {
-    localStorage.setItem('todos', JSON.stringify(this.todos()));
+  ngOnInit() {
+    this.loadTodos();
   }
 
-  get filteredTodos() {
-    return computed(() => {
-      switch (this.filter()) {
-        case 'active': return this.todos().filter(t => !t.done);
-        case 'done': return this.todos().filter(t => t.done);
-        default: return this.todos();
-      }
-    })();
-  }
-
-  // --- Add todo ---
-  openAddModal() {
-    this.newText = '';
-    this.showAddModal.set(true);
-  }
-
-  closeAddModal() {
-    this.showAddModal.set(false);
+  loadTodos() {
+    this.todoService.getTodos().subscribe((data) => {
+      this.todos = data;
+    });
   }
 
   addTodo() {
-    const text = this.newText.trim();
-    if (!text) return;
-    const todo: Todo = { id: Date.now(), text, done: false };
-    this.todos.update(list => [...list, todo]);
-    this.persist();
-    this.closeAddModal();
+    if (!this.newTodo.trim()) return;
+    const todo: Partial<Todo> = { title: this.newTodo, done: false };
+    this.todoService.addTodo(todo).subscribe(() => {
+      this.newTodo = '';
+      this.loadTodos();
+    });
   }
 
-  // --- Edit todo ---
-  openEditModal(todo: Todo) {
-    this.editId = todo.id;
-    this.editText = todo.text;
-    this.showEditModal.set(true);
+  toggleTodo(todo: Todo) {
+    this.todoService
+      .updateTodo(todo.id, { done: !todo.done })
+      .subscribe(() => this.loadTodos());
   }
 
-  closeEditModal() {
-    this.showEditModal.set(false);
-    this.editId = null;
-    this.editText = '';
-  }
-
-  saveEdit() {
-    if (!this.editText.trim() || this.editId === null) return;
-    this.todos.update(list =>
-      list.map(t => (t.id === this.editId ? { ...t, text: this.editText } : t))
-    );
-    this.persist();
-    this.closeEditModal();
-  }
-
-  // --- Toggle & Delete ---
-  toggle(todo: Todo) {
-    this.todos.update(list =>
-      list.map(t => (t.id === todo.id ? { ...t, done: !t.done } : t))
-    );
-    this.persist();
-  }
-
-  remove(id: number) {
-    this.todos.update(list => list.filter(t => t.id !== id));
-    this.persist();
-  }
-
-  // --- Filter ---
-  setFilter(f: 'all' | 'active' | 'done') {
-    this.filter.set(f);
+  deleteTodo(todo: Todo) {
+    this.todoService.deleteTodo(todo.id).subscribe(() => {
+      this.loadTodos();
+    });
   }
 }
+
