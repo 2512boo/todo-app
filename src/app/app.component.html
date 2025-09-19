@@ -1,18 +1,27 @@
-<div class="todo-app">
-  <h1>My Todo App</h1>
+<div class="container">
+  <h1>Todo App</h1>
 
-  <input [(ngModel)]="newTodo" placeholder="Add new todo" />
-  <button (click)="addTodo()">Add</button>
+  <!-- Nút dấu cộng -->
+  <button class="add-btn" (click)="openPopup()">+</button>
 
+  <!-- Danh sách todo -->
   <ul>
     <li *ngFor="let todo of todos">
-      <input
-        type="checkbox"
-        [(ngModel)]="todo.done"
-        (change)="toggleTodo(todo)"
-      />
-      <span [ngClass]="{ done: todo.done }">{{ todo.title }}</span>
-      <button (click)="deleteTodo(todo)">Delete</button>
+      <input type="checkbox" [(ngModel)]="todo.done" (change)="toggleTodo(todo)" />
+      <span [class.done]="todo.done">{{ todo.title }}</span>
+      <button (click)="deleteTodo(todo.id)">X</button>
     </li>
   </ul>
+
+  <!-- Popup nhập todo -->
+  <div class="popup" *ngIf="showPopup">
+    <div class="popup-content">
+      <h2>Thêm Todo</h2>
+      <input [(ngModel)]="newTodo" placeholder="Nhập todo..." />
+      <div class="popup-actions">
+        <button (click)="addTodo()">Lưu</button>
+        <button (click)="closePopup()">Hủy</button>
+      </div>
+    </div>
+  </div>
 </div>

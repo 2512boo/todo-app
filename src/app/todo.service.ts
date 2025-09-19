@@ -1,19 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface Todo {
-  id: string;
-  title: string;
-  done: boolean;
-}
+import { Todo } from './todo.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
-  private apiUrl = 'https://68be52b3227c48698f86827f.mockapi.io/todos'; 
-
+  private apiUrl = 'https://68cd08e6da4697a7f304822b.mockapi.io/todo/todos';
   constructor(private http: HttpClient) {}
 
   getTodos(): Observable<Todo[]> {
@@ -32,5 +26,3 @@ export class TodoService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
-
-
