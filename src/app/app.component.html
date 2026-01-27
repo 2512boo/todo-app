@@ -1,45 +1,27 @@
 <div class="container">
-  <h1>{{ title }}</h1>
+  <h1>Todo App</h1>
 
-  <!-- Nút + mở popup thêm todo -->
-  <button class="add-btn" (click)="openAddModal()">＋</button>
+  <!-- Nút dấu cộng -->
+  <button class="add-btn" (click)="openPopup()">+</button>
 
-  <!-- Popup thêm todo -->
-  <div class="modal" *ngIf="showAddModal()">
-    <div class="modal-content">
-      <h2>Thêm việc mới</h2>
-      <input type="text" [(ngModel)]="newText" placeholder="Nhập việc cần làm..." />
-      <div class="modal-actions">
-        <button (click)="addTodo()">Thêm</button>
-        <button (click)="closeAddModal()">Hủy</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Popup chỉnh sửa todo -->
-  <div class="modal" *ngIf="showEditModal()">
-    <div class="modal-content">
-      <h2>Chỉnh sửa việc</h2>
-      <input type="text" [(ngModel)]="editText" />
-      <div class="modal-actions">
-        <button (click)="saveEdit()">Lưu</button>
-        <button (click)="closeEditModal()">Hủy</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Filter -->
-  <div class="filters">
-    <button [class.active]="filter() === 'all'" (click)="setFilter('all')">Tất cả</button>
-    <button [class.active]="filter() === 'active'" (click)="setFilter('active')">Chưa xong</button>
-    <button [class.active]="filter() === 'done'" (click)="setFilter('done')">Đã xong</button>
-  </div>
-
-  <ul class="list">
-    <li *ngFor="let t of filteredTodos">
-      <input type="checkbox" [checked]="t.done" (change)="toggle(t)" />
-      <span [class.done]="t.done" (dblclick)="openEditModal(t)">{{ t.text }}</span>
-      <button class="delete" (click)="remove(t.id)">Xóa</button>
+  <!-- Danh sách todo -->
+  <ul>
+    <li *ngFor="let todo of todos">
+      <input type="checkbox" [(ngModel)]="todo.done" (change)="toggleTodo(todo)" />
+      <span [class.done]="todo.done">{{ todo.title }}</span>
+      <button (click)="deleteTodo(todo.id)">X</button>
     </li>
   </ul>
+
+  <!-- Popup nhập todo -->
+  <div class="popup" *ngIf="showPopup">
+    <div class="popup-content">
+      <h2>Thêm Todo</h2>
+      <input [(ngModel)]="newTodo" placeholder="Nhập todo..." />
+      <div class="popup-actions">
+        <button (click)="addTodo()">Lưu</button>
+        <button (click)="closePopup()">Hủy</button>
+      </div>
+    </div>
+  </div>
 </div>
